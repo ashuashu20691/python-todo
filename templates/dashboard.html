@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Todos</h5>
+                    <p class="card-text">{{ total_todos }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Completed Todos</h5>
+                    <p class="card-text">{{ completed_todos }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Incomplete Todos</h5>
+                    <p class="card-text">{{ incomplete_todos }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>Recent Todos</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Completed</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for todo in recent_todos %}
+            <tr>
+                <td>{{ todo[0] }}</td>
+                <td>{{ todo[1] }}</td>
+                <td>{{ todo[2] }}</td>
+                <td>{{ 'Yes' if todo[3] == 'Y' else 'No' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Todo List</a>
+</div>
+{% endblock %}
+

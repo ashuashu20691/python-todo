@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Todo Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>{% if todo %}Update{% else %}Create{% endif %} Todo</h1>
+        <form method="post">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title" value="{{ todo[1] if todo else '' }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" required>{{ todo[2] if todo else '' }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="completed">Completed</label>
+                <select class="form-control" id="completed" name="completed">
+                    <option value="Y" {% if todo and todo[3] == 'Y' %}selected{% endif %}>Yes</option>
+                    <option value="N" {% if todo and todo[3] == 'N' %}selected{% endif %}>No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="due_date">Due Date</label>
+                <input type="date" class="form-control" id="due_date" name="due_date" value="{{ todo[4].strftime('%Y-%m-%d') if todo and todo[4] else '' }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to List</a>
+    </div>
+</body>
+</html>
+

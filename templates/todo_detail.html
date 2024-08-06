@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Todo Details</h1>
+<div class="container">
+    <p><strong>ID:</strong> {{ todo[0] }}</p>
+    <p><strong>Title:</strong> {{ todo[1] }}</p>
+    <p><strong>Description:</strong> {{ todo[2] }}</p>
+    <p><strong>Completed:</strong> {{ 'Yes' if todo[3] == 'Y' else 'No' }}</p>
+    <p><strong>Due Date:</strong> {{ todo[4] if todo[4] else 'N/A' }}</p>
+    <a href="{{ url_for('update_todo', id=todo[0]) }}" class="btn btn-warning">Edit</a>
+    <form action="{{ url_for('delete_todo', id=todo[0]) }}" method="post" style="display:inline;">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Todo List</a>
+</div>
+{% endblock %}
+
