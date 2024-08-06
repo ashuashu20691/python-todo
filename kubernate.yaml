@@ -18,7 +18,7 @@ spec:
         image: bom.ocir.io/oraclepartnersas/todo-img:${BUILDRUN_HASH}
         imagePullPolicy: Always
         ports:
-        - containerPort: 8080
+        - containerPort: 5000
         - containerPort: 1521  # Add port 1521 for Oracle database
         env:
         - name: SPRING_DATASOURCE_URL
@@ -39,9 +39,9 @@ spec:
   type: LoadBalancer
   ports:
   - name: http
-    port: 8080
+    port: 5000
     protocol: TCP
-    targetPort: 8080
+    targetPort: 5000
   - name: oracle
     port: 1521
     targetPort: 1521
