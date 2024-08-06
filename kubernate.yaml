@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-deployment
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: todo-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: todo-app
+    spec:
+      containers:
+      - name: todo-app
+        image: bom.ocir.io/oraclepartnersas/todo-img:${BUILDRUN_HASH}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        - containerPort: 1521  # Add port 1521 for Oracle database
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:oracle:thin:@(description= (retry_count=2)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.ap-mumbai-1.oraclecloud.com))(connect_data=(service_name=us3a7wx6ev7txi4_javaapptestwallet_low.adb.oraclecloud.com))(security=(my_wallet_directory=/wallet/)(ssl_server_dn_match=yes)))"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "todouser"
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: "Igdefault123"
+        - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+          value: "oracle.jdbc.OracleDriver"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-app-service
+  namespace: default
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  - name: oracle
+    port: 1521
+    targetPort: 1521
+    protocol: TCP
+  selector:
+    app: todo-app
