@@ -27,8 +27,8 @@ steps:
     name: "Liquibase Migration"
     command: |
       docker run --rm \
-        -v $OCI_DEVOPS_GIT_DIR/changelogs:/liquibase/changelog \
-        -v $OCI_DEVOPS_GIT_DIR/liquibase.properties:/liquibase/liquibase.properties \
+        -v $OCI_DEVOPS_GIT_DIR/liquibase/changelogs:/liquibase/changelog \
+        -v $OCI_DEVOPS_GIT_DIR/liquibase/liquibase.properties:/liquibase/liquibase.properties \
         -v $OCI_DEVOPS_GIT_DIR/Wallet_2:/wallet \
         liquibase/liquibase \
         --changeLogFile=/liquibase/changelog/master-changelog.xml update
