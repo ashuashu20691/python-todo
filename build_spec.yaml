@@ -20,16 +20,16 @@ steps:
     command: |
       echo "first step running......."
       echo "BUILDRUN_HASH: " $BUILDRUN_HASH
-      echo "OCI_DEVOPS_GIT_DIR: " $OCI_DEVOPS_GIT_DIR
+      echo "OCI_PRIMARY_SOURCE_DIR: " $OCI_PRIMARY_SOURCE_DIR
 
   - type: Command
     timeoutInSeconds: 600
     name: "Liquibase Migration"
     command: |
       docker run --rm \
-        -v $OCI_DEVOPS_GIT_DIR/liquibase/changelogs:/liquibase/changelog \
-        -v $OCI_DEVOPS_GIT_DIR/liquibase/liquibase.properties:/liquibase/liquibase.properties \
-        -v $OCI_DEVOPS_GIT_DIR/Wallet_2:/wallet \
+        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelogs:/liquibase/changelog \
+        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties:/liquibase/liquibase.properties \
+        -v $OCI_PRIMARY_SOURCE_DIR/Wallet_2:/wallet \
         liquibase/liquibase \
         --changeLogFile=/liquibase/changelog/master-changelog.xml update
 
