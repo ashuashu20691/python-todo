@@ -27,7 +27,7 @@ steps:
     name: "Liquibase Migration"
     command: |
       docker run --rm \
-        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelogs:/liquibase/changelog \
+        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog:/liquibase/changelog \
         -v $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties:/liquibase/liquibase.properties \
         -v $OCI_PRIMARY_SOURCE_DIR/Wallet_2:/wallet \
         liquibase/liquibase \
