@@ -38,8 +38,8 @@ steps:
         -e TNS_ADMIN=/app/Wallet_2 \
         liquibase/liquibase:4.27.0 liquibase \
         --defaultsFile=/liquibase/liquibase.properties \
-        --changeLogFile=/liquibase/changelog/master-changelog.xml update
-      
+        --classpath=/liquibase/jars/ojdbc8.jar \
+        --changeLogFile=/liquibase/changelog/master-changelog.xml update      
       # Set SELinux back to enforcing mode
       sudo setenforce 1
 
