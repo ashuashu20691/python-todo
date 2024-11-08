@@ -31,15 +31,14 @@ steps:
 
       # Run the Liquibase migration using Docker
       docker run --rm \
-        -v $OCI_PRIMARY_SOURCE_DIR/liquibase:/liquibase \
+        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog:/liquibase/changelog \
+        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties:/liquibase/liquibase.properties \
         -v $OCI_PRIMARY_SOURCE_DIR/Wallet_2:/app/Wallet_2 \
         -v $OCI_PRIMARY_SOURCE_DIR/jars/ojdbc8.jar:/liquibase/jars/ojdbc8.jar \
         -e TNS_ADMIN=/app/Wallet_2 \
         liquibase/liquibase:4.27.0 liquibase \
         --defaultsFile=/liquibase/liquibase.properties \
-        --classpath=/liquibase/jars/ojdbc8.jar \
         --changeLogFile=/liquibase/changelog/master-changelog.xml update
-
       
       # Set SELinux back to enforcing mode
       sudo setenforce 1
