@@ -23,7 +23,7 @@ steps:
       echo "OCI_PRIMARY_SOURCE_DIR: " $OCI_PRIMARY_SOURCE_DIR
 
   - type: Command
-    timeoutInSeconds: 600
+    timeoutInSeconds: 6000
     name: "Liquibase Migration"
     command: |
       - docker run --rm \
