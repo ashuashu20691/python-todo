@@ -39,6 +39,7 @@ steps:
         liquibase/liquibase:4.27.0 liquibase \
         --defaultsFile=/liquibase/liquibase.properties \
         --classpath=/liquibase/jars/ojdbc8.jar \
+        --search-path=/liquibase \
         --changeLogFile=/liquibase/changelog/master-changelog.xml update      
       # Set SELinux back to enforcing mode
       sudo setenforce 1
