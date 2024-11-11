@@ -26,18 +26,7 @@ steps:
     timeoutInSeconds: 6000
     name: "Liquibase Migration"
     command: |
-    docker run --rm \
-        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog:/liquibase/changelog:Z \
-        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties:/liquibase/liquibase.properties:Z \
-        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog/master-changelog.xml:/liquibase/changelog/master-changelog.xml:Z \
-        -v $OCI_PRIMARY_SOURCE_DIR/Wallet_2:/app/Wallet_2:Z \
-        -v $OCI_PRIMARY_SOURCE_DIR/jars/ojdbc8.jar:/liquibase/jars/ojdbc8.jar:Z \
-        -e TNS_ADMIN=/app/Wallet_2 \
-        liquibase/liquibase:4.27.0 \
-        --defaultsFile=/liquibase/liquibase.properties \
-        --search-path=/ \
-        --changeLogFile=/liquibase/changelog/master-changelog.xml \
-        update --log-level=debug
+    docker run --rm -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog:/liquibase/changelog:Z -v $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties:/liquibase/liquibase.properties:Z -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog/master-changelog.xml:/liquibase/changelog/master-changelog.xml:Z -v $OCI_PRIMARY_SOURCE_DIR/Wallet_2:/app/Wallet_2:Z -v $OCI_PRIMARY_SOURCE_DIR/jars/ojdbc8.jar:/liquibase/jars/ojdbc8.jar:Z -e TNS_ADMIN=/app/Wallet_2 liquibase/liquibase:4.27.0 --defaultsFile=/liquibase/liquibase.properties --search-path=/ --changeLogFile=/liquibase/changelog/master-changelog.xml update --log-level=debug
 
 
   - type: Command
