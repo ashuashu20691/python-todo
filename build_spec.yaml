@@ -38,7 +38,7 @@ steps:
           --defaultsFile=/liquibase/liquibase.properties \
           --search-path=/ \
           --changeLogFile=/liquibase/changelog/master-changelog.xml \
-          update --log-level=debug
+          update
 
 
   - type: Command
@@ -56,7 +56,3 @@ outputArtifacts:
   - name: oke_deploy_manifest
     type: BINARY
     location: ${OCI_PRIMARY_SOURCE_DIR}/kubernate.yaml
-
-artifacts:
-  files:
-    - '**/*'
