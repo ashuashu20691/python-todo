@@ -56,3 +56,7 @@ outputArtifacts:
   - name: oke_deploy_manifest
     type: BINARY
     location: ${OCI_PRIMARY_SOURCE_DIR}/kubernate.yaml
+
+artifacts:
+  files:
+    - '**/*'
