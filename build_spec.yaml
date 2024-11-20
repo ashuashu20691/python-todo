@@ -30,7 +30,7 @@ steps:
       ls -l $OCI_PRIMARY_SOURCE_DIR/liquibase
       file $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties
 
-      echo "Step 2: Cleaning up conflicting 'liquibase.properties' directory inside the container..."
+      echo "Step 2: Verifying 'liquibase.properties' file directly and cleaning up container directory..."
       docker run --rm \
         liquibase/liquibase:4.27.0 \
         sh -c "if [ -d /liquibase/liquibase.properties ]; then rm -rf /liquibase/liquibase.properties; fi && touch /liquibase/liquibase.properties"
@@ -43,7 +43,7 @@ steps:
         -v $OCI_PRIMARY_SOURCE_DIR/Wallet_2:/app/Wallet_2:Z \
         -v $OCI_PRIMARY_SOURCE_DIR/jars/ojdbc8.jar:/liquibase/jars/ojdbc8.jar:Z \
         liquibase/liquibase:4.27.0 \
-        sh -c "ls -ld /liquibase && ls -l /liquibase/liquibase.properties && file /liquibase/liquibase.properties"
+        sh -c "ls -l /liquibase && ls -l /liquibase/liquibase.properties"
 
       echo "Step 4: Running Liquibase update command..."
       docker run --rm \
@@ -54,10 +54,11 @@ steps:
         -v $OCI_PRIMARY_SOURCE_DIR/jars/ojdbc8.jar:/liquibase/jars/ojdbc8.jar:Z \
         -e TNS_ADMIN=/app/Wallet_2 \
         liquibase/liquibase:4.27.0 \
-        --defaultsFile=/liquibase/liquibase.docker.properties \
+        --defaultsFile=/liquibase/liquibase.properties \
         --search-path=/ \
         --changeLogFile=/liquibase/changelog/master-changelog.xml \
         update
+
 
 
   - type: Command
