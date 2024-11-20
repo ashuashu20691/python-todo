@@ -36,7 +36,7 @@ steps:
       fi
 
       echo "Step 2: Changing ownership of files from root to liquibase..."
-      sudo chown -R liquibase:liquibase $OCI_PRIMARY_SOURCE_DIR/liquibase
+      chown -R liquibase:liquibase $OCI_PRIMARY_SOURCE_DIR/liquibase
 
       echo "Step 3: Verifying directory and file permissions before running Liquibase..."
       ls -l $OCI_PRIMARY_SOURCE_DIR/liquibase
