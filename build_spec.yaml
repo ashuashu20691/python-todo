@@ -30,12 +30,12 @@ steps:
       ls -l $OCI_PRIMARY_SOURCE_DIR/liquibase
       file $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties
 
-      echo "Step 2: Cleaning up conflicting directory in the Liquibase container..."
+      echo "Step 2: Cleaning up conflicting 'liquibase.properties' directory inside the container..."
       docker run --rm \
         liquibase/liquibase:4.27.0 \
-        sh -c "rm -rf /liquibase/liquibase.properties"
+        sh -c "rm -rf /liquibase/liquibase.properties && mkdir -p /liquibase && touch /liquibase/liquibase.properties"
 
-      echo "Step 3: Verifying container paths before running Liquibase..."
+      echo "Step 3: Mounting and verifying the file paths in the container..."
       docker run --rm \
         -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog:/liquibase/changelog:Z \
         -v $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties:/liquibase/liquibase.properties:Z \
@@ -58,7 +58,6 @@ steps:
         --search-path=/ \
         --changeLogFile=/liquibase/changelog/master-changelog.xml \
         update
-
 
 
   - type: Command
