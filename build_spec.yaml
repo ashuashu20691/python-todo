@@ -26,16 +26,23 @@ steps:
     timeoutInSeconds: 6000
     name: "Liquibase Migration"
     command: |
-      echo "Step 1: Checking Liquibase directory structure on the host..."
+      echo "Step 1: Checking if liquibase.properties is a file..."
+      if [ -d $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties ]; then
+        echo "Error: liquibase.properties is a directory. Fixing the issue..."
+        rm -rf $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties
+        touch $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties
+      else
+        echo "liquibase.properties is a file."
+      fi
+
+      echo "Step 2: Changing ownership of files from root to liquibase..."
+      sudo chown -R liquibase:liquibase $OCI_PRIMARY_SOURCE_DIR/liquibase
+
+      echo "Step 3: Verifying directory and file permissions before running Liquibase..."
       ls -l $OCI_PRIMARY_SOURCE_DIR/liquibase
       file $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties
 
-      echo "Step 2: Verifying 'liquibase.properties' file directly and cleaning up container directory..."
-      docker run --rm \
-        liquibase/liquibase:4.27.0 \
-        sh -c "if [ -d /liquibase/liquibase.properties ]; then rm -rf /liquibase/liquibase.properties; fi && touch /liquibase/liquibase.properties"
-
-      echo "Step 3: Verifying container paths before running Liquibase..."
+      # Verify file permissions inside the container
       docker run --rm \
         -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog:/liquibase/changelog:Z \
         -v $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties:/liquibase/liquibase.properties:Z \
@@ -58,6 +65,7 @@ steps:
         --search-path=/ \
         --changeLogFile=/liquibase/changelog/master-changelog.xml \
         update
+
 
 
 
