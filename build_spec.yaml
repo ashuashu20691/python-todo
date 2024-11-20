@@ -26,19 +26,39 @@ steps:
     timeoutInSeconds: 6000
     name: "Liquibase Migration"
     command: |
-      - |
-        echo "Checking Liquibase directory structure..."
-        ls -l $OCI_PRIMARY_SOURCE_DIR/liquibase
-        file $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties     
-        docker run --rm \
-          -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog:/liquibase/changelog:Z \
-          -v $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties:/liquibase/liquibase.properties:Z \
-          -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog/master-changelog.xml:/liquibase/changelog/master-changelog.xml:Z \
-          -v $OCI_PRIMARY_SOURCE_DIR/Wallet_2:/app/Wallet_2:Z \
-          -v $OCI_PRIMARY_SOURCE_DIR/jars/ojdbc8.jar:/liquibase/jars/ojdbc8.jar:Z \
-          -e TNS_ADMIN=/app/Wallet_2 \
-          liquibase/liquibase:4.27.0 \
-          sh -c "ls -l /liquibase && file /liquibase/liquibase.properties"
+      echo "Step 1: Checking Liquibase directory structure on the host..."
+      ls -l $OCI_PRIMARY_SOURCE_DIR/liquibase
+      file $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties
+
+      echo "Step 2: Cleaning up conflicting directory in the Liquibase container..."
+      docker run --rm \
+        liquibase/liquibase:4.27.0 \
+        sh -c "rm -rf /liquibase/liquibase.properties"
+
+      echo "Step 3: Verifying container paths before running Liquibase..."
+      docker run --rm \
+        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog:/liquibase/changelog:Z \
+        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties:/liquibase/liquibase.properties:Z \
+        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog/master-changelog.xml:/liquibase/changelog/master-changelog.xml:Z \
+        -v $OCI_PRIMARY_SOURCE_DIR/Wallet_2:/app/Wallet_2:Z \
+        -v $OCI_PRIMARY_SOURCE_DIR/jars/ojdbc8.jar:/liquibase/jars/ojdbc8.jar:Z \
+        liquibase/liquibase:4.27.0 \
+        sh -c "ls -l /liquibase && file /liquibase/liquibase.properties"
+
+      echo "Step 4: Running Liquibase update command..."
+      docker run --rm \
+        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog:/liquibase/changelog:Z \
+        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties:/liquibase/liquibase.properties:Z \
+        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog/master-changelog.xml:/liquibase/changelog/master-changelog.xml:Z \
+        -v $OCI_PRIMARY_SOURCE_DIR/Wallet_2:/app/Wallet_2:Z \
+        -v $OCI_PRIMARY_SOURCE_DIR/jars/ojdbc8.jar:/liquibase/jars/ojdbc8.jar:Z \
+        -e TNS_ADMIN=/app/Wallet_2 \
+        liquibase/liquibase:4.27.0 \
+        --defaultsFile=/liquibase/liquibase.properties \
+        --search-path=/ \
+        --changeLogFile=/liquibase/changelog/master-changelog.xml \
+        update
+
 
 
   - type: Command
