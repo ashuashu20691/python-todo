@@ -54,7 +54,7 @@ steps:
         -v $OCI_PRIMARY_SOURCE_DIR/jars/ojdbc8.jar:/liquibase/jars/ojdbc8.jar:Z \
         -e TNS_ADMIN=/app/Wallet_2 \
         liquibase/liquibase:4.27.0 \
-        --defaultsFile=/liquibase/liquibase.properties \
+        --defaultsFile=/liquibase/liquibase.docker.properties \
         --search-path=/ \
         --changeLogFile=/liquibase/changelog/master-changelog.xml \
         update
