@@ -27,6 +27,9 @@ steps:
     name: "Liquibase Migration"
     command: |
       - |
+        echo "Checking Liquibase directory structure..."
+        ls -l $OCI_PRIMARY_SOURCE_DIR/liquibase
+        file $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties     
         docker run --rm \
           -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog:/liquibase/changelog:Z \
           -v $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties:/liquibase/liquibase.properties:Z \
