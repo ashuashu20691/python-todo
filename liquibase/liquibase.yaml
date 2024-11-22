@@ -1,0 +1,5 @@
+url: jdbc:oracle:thin:@testcloneautomatecicdqa_tp?TNS_ADMIN=/app/Wallet_2
+username: todouser
+password: Igdefault123
+driver: oracle.jdbc.OracleDriver
+classpath: /liquibase/jars/ojdbc8.jar
