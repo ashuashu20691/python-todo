@@ -41,13 +41,11 @@ steps:
 
       # Verify file permissions inside the container
       docker run --rm \
-        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog:/liquibase/changelog \
-        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties:/liquibase.properties \
-        -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog/master-changelog.xml:/liquibase/changelog/master-changelog.xml \
+        -v $OCI_PRIMARY_SOURCE_DIR/lq:/lq \
         -v $OCI_PRIMARY_SOURCE_DIR/Wallet_2:/app/Wallet_2 \
         -v $OCI_PRIMARY_SOURCE_DIR/jars/ojdbc8.jar:/liquibase/jars/ojdbc8.jar \
         liquibase/liquibase \
-        sh -c "echo -123- && pwd && echo -123- && cd /liquibase && ls -l /liquibase && ls -l /liquibase.properties"
+        sh -c "echo -123- && pwd && echo -123- && cd /lq && ls -l /lq && ls -l /lq/liquibase.properties"
 
       echo "Step 4: Running Liquibase update command..."
       docker run --rm \
