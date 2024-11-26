@@ -52,7 +52,7 @@ steps:
         --mount type=bind,source=/workspace/todo-app/Wallet_2,target=/app/Wallet_2 \
         --mount type=bind,source=/workspace/todo-app/jars/ojdbc8.jar,target=/liquibase/jars/ojdbc8.jar \
         liquibase \
-        sh -c "echo 2 &&  ls -l /lq && ls -l /app/Wallet_2 && ls -l /liquibase/jars && ls -l /liquibase/changelog"
+        sh -c "echo 2 &&  ls -l /lq && ls -l /app/Wallet_2 && ls -l /liquibase/jars && ls -l /lg/changelog"
 
 
       echo "Step 4: Running Liquibase update command..."
