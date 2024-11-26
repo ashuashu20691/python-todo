@@ -47,7 +47,7 @@ steps:
         -v $OCI_PRIMARY_SOURCE_DIR/Wallet_2:/app/Wallet_2 \
         -v $OCI_PRIMARY_SOURCE_DIR/jars/ojdbc8.jar:/liquibase/jars/ojdbc8.jar \
         liquibase/liquibase \
-        sh -c "pwd && cd $OCI_PRIMARY_SOURCE_DIR && ls -l /liquibase && ls -l /liquibase.properties"
+        sh -c "echo -123- && pwd -123- && echo && cd $liquibase && ls -l /liquibase && ls -l /liquibase.properties"
 
       echo "Step 4: Running Liquibase update command..."
       docker run --rm \
