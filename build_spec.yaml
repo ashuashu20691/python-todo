@@ -41,7 +41,7 @@ steps:
 
       # Verify file permissions inside the container
       docker run --rm \
-        -v $OCI_PRIMARY_SOURCE_DIR/lq:/lq \
+        -v /workspace/todo-app/lq:/lq \
         -v $OCI_PRIMARY_SOURCE_DIR/Wallet_2:/app/Wallet_2 \
         -v $OCI_PRIMARY_SOURCE_DIR/jars/ojdbc8.jar:/liquibase/jars/ojdbc8.jar \
         liquibase \
