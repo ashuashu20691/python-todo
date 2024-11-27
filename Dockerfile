@@ -16,8 +16,7 @@ WORKDIR /workspace
 
 # Download Liquibase and the required JDBC driver
 RUN curl -LJO https://github.com/liquibase/liquibase/releases/download/v4.27.0/liquibase-4.27.0.tar.gz && \
-    tar -xzf liquibase-4.27.0.tar.gz && \
-    curl -LJO https://download.oracle.com/otn-pub/otn_software/jdbc/instantclient/ojdbc8.jar
+    tar -xzf liquibase-4.27.0.tar.gz
 
 # Copy Liquibase configuration files
 COPY ./lq /workspace/lq
