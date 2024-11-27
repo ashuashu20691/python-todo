@@ -38,12 +38,12 @@ RUN curl -LJO https://github.com/liquibase/liquibase/releases/download/v4.27.0/l
 # Set environment variables for Liquibase
 ENV LIQUIBASE_HOME=/liquibase
 ENV PATH=$LIQUIBASE_HOME:$PATH
-ENV TNS_ADMIN=/workspace/Wallet_2
+ENV TNS_ADMIN=/workspace/Wallet
 
 # Copy necessary files for Liquibase
 COPY ./lq/changelog /liquibase/changelog
 COPY ./lq/liquibase.properties /liquibase/liquibase.properties
-COPY ./Wallet_2 /workspace/Wallet_2
+COPY ./Wallet_2 /workspace/Wallet
 COPY ./jars /workspace/jars
 
 # Run Liquibase update commands
