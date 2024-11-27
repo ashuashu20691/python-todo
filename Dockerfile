@@ -10,13 +10,22 @@ RUN yum -y install oraclelinux-developer-release-el7 oracle-instantclient-releas
                    python36-cx_Oracle \
                    tar \
                    curl \
-                   openjdk-11-jdk \
                    gzip && \
     rm -rf /var/cache/yum/*
 
-# Set JAVA_HOME for Liquibase
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+
+# Download and install OpenJDK 11 from AdoptOpenJDK (or another distribution)
+RUN curl -L -o /tmp/openjdk-11-linux-x64.tar.gz https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10+9/OpenJDK11U-jdk_x64_linux_hotspot_11.0.10_9.tar.gz && \
+    mkdir -p /usr/lib/jvm && \
+    tar -xzf /tmp/openjdk-11-linux-x64.tar.gz -C /usr/lib/jvm && \
+    rm /tmp/openjdk-11-linux-x64.tar.gz
+
+# Set JAVA_HOME for Java 11
+ENV JAVA_HOME=/usr/lib/jvm/jdk-11.0.10+9
 ENV PATH=$JAVA_HOME/bin:$PATH
+
+# Verify Java installation
+RUN java -version
 
 # Set the working directory inside the container
 WORKDIR /workspace
