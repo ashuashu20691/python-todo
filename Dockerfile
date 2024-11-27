@@ -10,7 +10,7 @@ RUN yum -y install oraclelinux-developer-release-el7 oracle-instantclient-releas
                    python36-cx_Oracle \
                    tar \
                    curl \
-                   openjdk-11-jre-headless \
+                   openjdk-11-jdk \
                    gzip && \
     rm -rf /var/cache/yum/*
 
