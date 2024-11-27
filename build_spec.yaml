@@ -55,16 +55,16 @@ steps:
       #   sh -c "echo 2 &&  ls -l /lq && ls -l /app/Wallet_2 && ls -l /liquibase/jars && ls -l /lg/changelog"
 
 
-      # echo "Step 4: Running Liquibase update command..."
+      # # echo "Step 4: Running Liquibase update command..."
       # docker run --rm \
       #   -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog:/liquibase/changelog:Z \
-      #   -v $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.yaml:/liquibase/liquibase.yaml:Z \
+      #   -v $OCI_PRIMARY_SOURCE_DIR/liquibase/liquibase.properties:/liquibase/liquibase.properties:Z \
       #   -v $OCI_PRIMARY_SOURCE_DIR/liquibase/changelog/master-changelog.xml:/liquibase/changelog/master-changelog.xml:Z \
       #   -v $OCI_PRIMARY_SOURCE_DIR/Wallet_2:/app/Wallet_2:Z \
       #   -v $OCI_PRIMARY_SOURCE_DIR/jars/ojdbc8.jar:/liquibase/jars/ojdbc8.jar:Z \
       #   -e TNS_ADMIN=/app/Wallet_2 \
       #   liquibase/liquibase \
-      #   --defaultsFile=/liquibase/liquibase.yaml \
+      #   --defaultsFile=/liquibase/liquibase.properties \
       #   --search-path=/ \
       #   --changeLogFile=/liquibase/changelog/master-changelog.xml \
       #   update

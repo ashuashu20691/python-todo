@@ -22,21 +22,22 @@ RUN curl -LJO https://github.com/liquibase/liquibase/releases/download/v4.27.0/l
     rm liquibase-4.27.0.tar.gz
 
 # Copy necessary files for Liquibase
-COPY ./lq /workspace/lq
+COPY ./lq /liquibase
 COPY ./Wallet_2 /workspace/Wallet_2
 COPY ./jars /workspace/jars
 
 # Set environment variables for Liquibase
-ENV LIQUIBASE_HOME=/workspace/liquibase
+ENV LIQUIBASE_HOME=/liquibase
 ENV PATH=$LIQUIBASE_HOME:$PATH
 ENV TNS_ADMIN=/workspace/Wallet_2
 
 # Run Liquibase update commands
-RUN liquibase \
-    --changeLogFile=/workspace/lq/master-changelog.xml \
+RUN liquibase/liquibase \
+    --changeLogFile=/liquibase/changelog/master-changelog.xml \
     --url=jdbc:oracle:thin:@testcloneautomatecicdqa_tp?TNS_ADMIN=/workspace/Wallet_2 \
     --username=todouser \
     --password=Igdefault123 \
+    --search-path=/ \
     --classpath=/workspace/jars/ojdbc8.jar \
     update
 
