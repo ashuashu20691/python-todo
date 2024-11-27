@@ -2,7 +2,20 @@
 FROM oraclelinux:7-slim as builder
 
 # Install Oracle Instant Client, gzip, and other dependencies
-# Download Liquibase and the required JDBC driver
+RUN yum -y install oraclelinux-developer-release-el7 oracle-instantclient-release-el7 && \
+    yum -y install python3 \
+                   python3-libs \
+                   python3-pip \
+                   python3-setuptools \
+                   python36-cx_Oracle \
+                   tar \
+                   curl \
+                   gzip && \
+    rm -rf /var/cache/yum/*
+
+# Set the working directory inside the container
+WORKDIR /workspace
+
 RUN curl -LJO https://github.com/liquibase/liquibase/releases/download/v4.27.0/liquibase-4.27.0.tar.gz && \
     mkdir -p /liquibase && \
     tar -xzf liquibase-4.27.0.tar.gz -C /liquibase && \
@@ -30,8 +43,6 @@ RUN liquibase \
     --search-path=/ \
     --classpath=/workspace/jars/ojdbc8.jar \
     update
-
-
 # Switch to application build stage
 WORKDIR /app
 
