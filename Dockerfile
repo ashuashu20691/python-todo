@@ -42,21 +42,18 @@ ENV TNS_ADMIN=/workspace/Wallet_2
 
 # Copy necessary files for Liquibase
 COPY ./lq/changelog /liquibase/changelog
+COPY ./lq/liquibase.properties /liquibase/liquibase.properties
 COPY ./Wallet_2 /workspace/Wallet_2
 COPY ./jars /workspace/jars
-
-# Validate Liquibase installation
-RUN liquibase --version
 
 # Run Liquibase update commands
 RUN liquibase \
     --changeLogFile=/liquibase/changelog/master-changelog.xml \
-    --url=jdbc:oracle:thin:@testcloneautomatecicdqa_tp?TNS_ADMIN=/workspace/Wallet_2 \
-    --username=todouser \
-    --password=Igdefault123 \
     --search-path=/ \
     --classpath=/workspace/jars/ojdbc8.jar \
+    --defaultsFile=/liquibase/liquibase.properties \
     update
+
 # Switch to application build stage
 WORKDIR /app
 
