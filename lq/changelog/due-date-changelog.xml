@@ -7,7 +7,7 @@
     <!-- ChangeSet to add a new column 'due_date' to the 'todos' table -->
     <changeSet id="1" author="ashu">
         <addColumn tableName="todos">
-            <column name="due_date" type="date" />
+            <column name="due_date_1" type="date" />
         </addColumn>
     </changeSet>
 </databaseChangeLog>
