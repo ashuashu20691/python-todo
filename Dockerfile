@@ -1,22 +1,26 @@
-# Use the official OpenJDK 11 image as a base image
-FROM openjdk:11-jdk-slim as builder
+# Base image based on Oracle Linux 7-slim
+FROM oraclelinux:7-slim as builder
 
 # Install Oracle Instant Client, gzip, and other dependencies
-RUN apt-get update && apt-get install -y \
-        curl \
-        tar \
-        python3 \
-        python3-pip \
-        python3-setuptools \
-        python3-libs \
-        python3-cx_Oracle \
-        gzip && \
-    rm -rf /var/lib/apt/lists/*
+RUN yum -y install oraclelinux-developer-release-el7 oracle-instantclient-release-el7 && \
+    yum -y install python3 \
+                   python3-libs \
+                   python3-pip \
+                   python3-setuptools \
+                   python36-cx_Oracle \
+                   tar \
+                   curl \
+                   openjdk-11-jdk \
+                   gzip && \
+    rm -rf /var/cache/yum/*
+
+# Set JAVA_HOME for Liquibase
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+ENV PATH=$JAVA_HOME/bin:$PATH
 
 # Set the working directory inside the container
 WORKDIR /workspace
 
-# Download Liquibase and extract it
 RUN curl -LJO https://github.com/liquibase/liquibase/releases/download/v4.27.0/liquibase-4.27.0.tar.gz && \
     mkdir -p /liquibase && \
     tar -xzf liquibase-4.27.0.tar.gz -C /liquibase && \
@@ -27,7 +31,7 @@ ENV LIQUIBASE_HOME=/liquibase
 ENV PATH=$LIQUIBASE_HOME:$PATH
 ENV TNS_ADMIN=/workspace/Wallet_2
 
-# Copy necessary files for Liquibase (adjust paths as needed)
+# Copy necessary files for Liquibase
 COPY ./lq/changelog /liquibase/changelog
 COPY ./Wallet_2 /workspace/Wallet_2
 COPY ./jars /workspace/jars
@@ -44,11 +48,10 @@ RUN liquibase \
     --search-path=/ \
     --classpath=/workspace/jars/ojdbc8.jar \
     update
-
 # Switch to application build stage
 WORKDIR /app
 
-# Copy requirements and install dependencies for the Flask application
+# Copy requirements and install dependencies
 COPY ./requirements.txt /app/requirements.txt
 RUN pip3 install --no-cache-dir -r /app/requirements.txt
 
