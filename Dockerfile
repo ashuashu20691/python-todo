@@ -1,42 +1,51 @@
-# build the image based on oraclelinux:7-slim
-FROM oraclelinux:7-slim
+# Base image based on oraclelinux:7-slim
+FROM oraclelinux:7-slim as builder
 
-# Install Oracle Instant Client and Python dependencies
+# Install Oracle Instant Client and other dependencies
 RUN yum -y install oraclelinux-developer-release-el7 oracle-instantclient-release-el7 && \
     yum -y install python3 \
                    python3-libs \
                    python3-pip \
                    python3-setuptools \
                    python36-cx_Oracle && \
+    yum -y install tar curl && \
     rm -rf /var/cache/yum/*
 
-# Metadata about the maintainer
-LABEL Maintainer_Name="Vijay balebail" Maintainer_Email="vijay.balebail@oracle.com"
-
 # Set the working directory inside the container
-WORKDIR /
+WORKDIR /workspace
 
-# Set environment variables
-ENV FLASK_APP app.py
-ENV FLASK_ENV development
-# Set environment variables
-ENV TNS_ADMIN=/app/Wallet_2
+# Download Liquibase and the required JDBC driver
+RUN curl -LJO https://github.com/liquibase/liquibase/releases/download/v4.27.0/liquibase-4.27.0.tar.gz && \
+    tar -xzf liquibase-4.27.0.tar.gz && \
+    curl -LJO https://download.oracle.com/otn-pub/otn_software/jdbc/instantclient/ojdbc8.jar
 
-# Copy the requirements file and install dependencies
-COPY ./requirements.txt /requirements.txt
-RUN pip3 install -r requirements.txt
+# Copy Liquibase configuration files
+COPY ./lq /workspace/lq
+COPY ./Wallet_2 /workspace/Wallet_2
+COPY ./jars /workspace/jars
 
-# Create app directory and copy project files
-RUN mkdir /app
+# Set environment variables for Liquibase
+ENV LIQUIBASE_HOME=/workspace/liquibase
+ENV PATH=$LIQUIBASE_HOME:$PATH
+ENV TNS_ADMIN=/workspace/Wallet_2
+
+# Run Liquibase update commands
+RUN ./liquibase/liquibase \
+    --changeLogFile=/workspace/lq/master-changelog.xml \
+    --url=jdbc:oracle:thin:@testcloneautomatecicdqa_tp?TNS_ADMIN=/app/Wallet_2 \
+    --username=todouser \
+    --password=Igdefault123 \
+    --classpath=/workspace/jars/ojdbc8.jar \
+    update
+
+# Build Flask application
 WORKDIR /app
+COPY ./requirements.txt /requirements.txt
+RUN pip3 install -r /requirements.txt
 COPY . .
 
-# Copy Oracle Wallet files to the container
-COPY Wallet_2 /app/Wallet_2
-
-# Expose the Flask port
+# Expose Flask port
 EXPOSE 5000
 
 # Command to run the Flask application
 CMD ["python3", "app3.py"]
-
