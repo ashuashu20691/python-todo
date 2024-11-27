@@ -18,11 +18,11 @@ WORKDIR /workspace
 
 # Download Liquibase and the required JDBC driver
 RUN curl -LJO https://github.com/liquibase/liquibase/releases/download/v4.27.0/liquibase-4.27.0.tar.gz && \
-    tar -xzf liquibase-4.27.0.tar.gz && \
+    tar -xzf liquibase-4.27.0.tar.gz -C /liquibase && \
     rm liquibase-4.27.0.tar.gz
 
 # Copy necessary files for Liquibase
-COPY ./lq /liquibase
+COPY ./lq/changelog /liquibase/changelog
 COPY ./Wallet_2 /workspace/Wallet_2
 COPY ./jars /workspace/jars
 
@@ -31,8 +31,11 @@ ENV LIQUIBASE_HOME=/liquibase
 ENV PATH=$LIQUIBASE_HOME:$PATH
 ENV TNS_ADMIN=/workspace/Wallet_2
 
+# Debug: List files in /liquibase to confirm installation
+RUN ls -l /liquibase
+
 # Run Liquibase update commands
-RUN liquibase \
+RUN /liquibase/liquibase \
     --changeLogFile=/liquibase/changelog/master-changelog.xml \
     --url=jdbc:oracle:thin:@testcloneautomatecicdqa_tp?TNS_ADMIN=/workspace/Wallet_2 \
     --username=todouser \
@@ -40,6 +43,7 @@ RUN liquibase \
     --search-path=/ \
     --classpath=/workspace/jars/ojdbc8.jar \
     update
+
 
 # Switch to application build stage
 WORKDIR /app
