@@ -32,7 +32,7 @@ ENV PATH=$LIQUIBASE_HOME:$PATH
 ENV TNS_ADMIN=/workspace/Wallet_2
 
 # Run Liquibase update commands
-RUN liquibase/liquibase \
+RUN liquibase \
     --changeLogFile=/liquibase/changelog/master-changelog.xml \
     --url=jdbc:oracle:thin:@testcloneautomatecicdqa_tp?TNS_ADMIN=/workspace/Wallet_2 \
     --username=todouser \
