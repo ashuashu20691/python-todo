@@ -43,7 +43,7 @@ ENV TNS_ADMIN=/workspace/Wallet
 # Copy necessary files for Liquibase
 COPY ./lq/changelog /liquibase/changelog
 COPY ./lq/liquibase.properties /liquibase/liquibase.properties
-COPY ./Wallet_2 /workspace/Wallet
+COPY ./Wallet /workspace/Wallet
 COPY ./jars /workspace/jars
 
 # Run Liquibase update commands
