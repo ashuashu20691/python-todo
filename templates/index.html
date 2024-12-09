@@ -10,7 +10,8 @@
                 <th>Title</th>
                 <th>Description</th>
                 <th>Completed</th>
-                <th>Due Date</th> <!-- New field -->
+                <th>Priority</th> <!-- New Column for Priority -->
+                <th>Due Date</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -21,7 +22,8 @@
                 <td>{{ todo[1] }}</td>
                 <td>{{ todo[2] }}</td>
                 <td>{{ 'Yes' if todo[3] == 'Y' else 'No' }}</td>
-                <td>{{ todo[4] if todo[4] else 'N/A' }}</td> <!-- New field -->
+                <td>{{ todo[5] if todo[5] else 'N/A' }}</td> <!-- Render the Priority -->
+                <td>{{ todo[4] if todo[4] else 'N/A' }}</td>
                 <td>
                     <a href="{{ url_for('todo_detail', id=todo[0]) }}" class="btn btn-info">View</a>
                     <a href="{{ url_for('update_todo', id=todo[0]) }}" class="btn btn-warning">Edit</a>
@@ -36,4 +38,3 @@
     <a href="{{ url_for('create_todo') }}" class="btn btn-primary">Add New Todo</a>
 </div>
 {% endblock %}
-

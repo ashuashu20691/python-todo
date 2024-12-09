@@ -24,9 +24,6 @@ RUN curl -L -o /tmp/openjdk-11-linux-x64.tar.gz https://github.com/AdoptOpenJDK/
 ENV JAVA_HOME=/usr/lib/jvm/jdk-11.0.10+9
 ENV PATH=$JAVA_HOME/bin:$PATH
 
-# Verify Java installation
-RUN java -version
-
 # Set the working directory inside the container
 WORKDIR /workspace
 
@@ -68,4 +65,4 @@ COPY . .
 EXPOSE 5000
 
 # Set the command to run the Flask application
-CMD ["python3", "app3.py"]
+CMD ["python3", "app.py"]
