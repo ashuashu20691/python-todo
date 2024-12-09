@@ -20,15 +20,7 @@ spec:
         ports:
         - containerPort: 5000
         - containerPort: 1521  # Add port 1521 for Oracle database
-        env:
-        - name: SPRING_DATASOURCE_URL
-          value: "jdbc:oracle:thin:@(description= (retry_count=2)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.ap-mumbai-1.oraclecloud.com))(connect_data=(service_name=us3a7wx6ev7txi4_javaapptestwallet_low.adb.oraclecloud.com))(security=(my_wallet_directory=/wallet/)(ssl_server_dn_match=yes)))"
-        - name: SPRING_DATASOURCE_USERNAME
-          value: "todouser"
-        - name: SPRING_DATASOURCE_PASSWORD
-          value: "Igdefault123"
-        - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
-          value: "oracle.jdbc.OracleDriver"
+        
 ---
 apiVersion: v1
 kind: Service
