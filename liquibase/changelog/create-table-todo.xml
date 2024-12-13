@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Create 'todo' Table -->
+    <changeSet id="1-create-todo-table" author="vivek">
+        <createTable tableName="todos">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="completed" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="due_date" type="DATE"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Insert Dummy Data -->
+    <changeSet id="2-insert-dummy-data" author="vivek">
+        <insert tableName="todos">
+            <column name="id" value="1"/>
+            <column name="title" value="Buy groceries"/>
+            <column name="description" value="Milk, bread, eggs, fruits"/>
+            <column name="completed" value="N"/>
+            <column name="due_date" valueComputed="TO_DATE('2024-12-05', 'YYYY-MM-DD')"/>
+        </insert>
+        <insert tableName="todos">
+            <column name="id" value="2"/>
+            <column name="title" value="Finish project report"/>
+            <column name="description" value="Complete final draft for client"/>
+            <column name="completed" value="Y"/>
+            <column name="due_date" valueComputed="TO_DATE('2024-12-10', 'YYYY-MM-DD')"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
