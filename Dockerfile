@@ -38,8 +38,8 @@ ENV PATH=$LIQUIBASE_HOME:$PATH
 ENV TNS_ADMIN=/workspace/Wallet
 
 # Copy necessary files for Liquibase
-COPY ./lq/changelog /liquibase/changelog
-COPY ./lq/liquibase.properties /liquibase/liquibase.properties
+COPY ./liquibase/changelog /liquibase/changelog
+COPY ./liquibase/liquibase.properties /liquibase/liquibase.properties
 COPY ./Wallet /workspace/Wallet
 COPY ./jars /workspace/jars
 

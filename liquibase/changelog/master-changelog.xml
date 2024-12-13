@@ -6,8 +6,8 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <!-- First changelog file -->
-    <include file="/liquibase/changelog/due-date-changelog.xml" />
-    <include file="/liquibase/changelog/timestamp.xml" />
+    <include file="/liquibase/changelog/create-table-todo.xml" />
+    <include file="/liquibase/changelog/add-priority-field.xml" />
     
     
 </databaseChangeLog>
