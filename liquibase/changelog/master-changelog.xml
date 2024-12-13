@@ -7,7 +7,6 @@
 
     <!-- First changelog file -->
     <include file="/liquibase/changelog/create-table-todo.xml" />
-    <include file="/liquibase/changelog/add-priority-field.xml" />
     
     
 </databaseChangeLog>
