@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: todo-app
-        image: bom.ocir.io/oraclepartnersas/todo-img:BUILDRUN_HASH
+        image: bom.ocir.io/oraclepartnersas/todo-img:${BUILDRUN_HASH}
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
